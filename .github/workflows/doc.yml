@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       source-path:
-        default: './src/**/*.ts'
+        default: './src'
         required: false
         type: string
 
@@ -24,11 +24,11 @@ jobs:
           node-version: 20.x
 
       - name: Install
-        run: npm install typedoc typedoc-plugin-markdown @ysk8hori/typescript-graph -g
+        run: npm install typescript typedoc typedoc-plugin-markdown @ysk8hori/typescript-graph -g
 
       - name: Documents Update
         run: |
-          typedoc --plugin typedoc-plugin-markdown ${{ inputs.source-path }}
+          typedoc --entryPointStrategy expand ${{ inputs.source-path }} --plugin typedoc-plugin-markdown
           tsg --md dependencies.md
 
       - name: Commit & Push
